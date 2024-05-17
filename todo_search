@@ -1,0 +1,21 @@
+#!/bin/bash
+
+TODO_FILE="$HOME/.todo_tasks"
+
+title=$1
+if [ -z "$title" ]; then
+    echo "Title is required." >&2
+    exit 1
+fi
+
+tasks=$(grep "|$title|" "$TODO_FILE")
+
+if [ -z "$tasks" ]; then
+    echo "No tasks found with title containing '$title'."
+    exit 0
+fi
+
+echo "Tasks matching '$title':"
+echo "$tasks" | while IFS='|' read -r id title description location due_date due_time completed; do
+    echo "- $title (ID: $id)"
+done

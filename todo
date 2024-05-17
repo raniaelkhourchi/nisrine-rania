@@ -1,0 +1,54 @@
+#!/bin/bash
+
+TODO_FILE="$HOME/.todo_tasks"
+
+# Vérifiez et créez le fichier de tâches si nécessaire
+if [ ! -f "$TODO_FILE" ]; then
+    touch "$TODO_FILE"
+fi
+
+# Fonction d'usage
+usage() {
+    echo "Usage: todo [command]"
+    echo "Commands:"
+    echo "  create          Create a new task"
+    echo "  update <id>     Update an existing task"
+    echo "  delete <id>     Delete a task"
+    echo "  show <id>       Show details of a task"
+    echo "  list <date>     List tasks of a given day"
+    echo "  search <title>  Search for a task by title"
+}
+
+# Vérifiez si aucun argument n'est fourni
+if [ $# -eq 0 ]; then
+    # Affiche les tâches d'aujourd'hui
+    today=$(date +%Y-%m-%d)
+    ./todo_list "$today"
+    exit 0
+fi
+
+# Gérer les commandes
+case $1 in
+    create)
+        ./todo_create
+        ;;
+    update)
+        ./todo_update "$2"
+        ;;
+    delete)
+        ./todo_delete "$2"
+        ;;
+    show)
+        ./todo_show "$2"
+        ;;
+    list)
+        ./todo_list "$2"
+        ;;
+    search)
+        ./todo_search "$2"
+        ;;
+    *)
+        usage
+        ;;
+esac
+

@@ -1,0 +1,23 @@
+#!/bin/bash
+
+TODO_FILE="$HOME/.todo_tasks"
+
+date=$1
+if [ -z "$date" ]; then
+    echo "Date (YYYY-MM-DD) is required." >&2
+    exit 1
+fi
+
+completed_tasks=$(grep "|$date|" "$TODO_FILE" | grep "|true$")
+uncompleted_tasks=$(grep "|$date|" "$TODO_FILE" | grep "|false$")
+
+echo "Completed Tasks:"
+echo "$completed_tasks" | while IFS='|' read -r id title description location due_date due_time completed; do
+    echo "- $title (ID: $id)"
+done
+
+echo ""
+echo "Uncompleted Tasks:"
+echo "$uncompleted_tasks" | while IFS='|' read -r id title description location due_date due_time completed; do
+    echo "- $title (ID: $id)"
+done

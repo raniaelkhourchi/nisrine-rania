@@ -1,0 +1,25 @@
+#!/bin/bash
+
+TODO_FILE="$HOME/.todo_tasks"
+
+id=$1
+if [ -z "$id" ]; then
+    echo "Task ID is required." >&2
+    exit 1
+fi
+
+task=$(grep "^$id|" "$TODO_FILE")
+if [ -z "$task" ]; then
+    echo "Task not found." >&2
+    exit 1
+fi
+
+IFS='|' read -r id title description location due_date due_time completed <<< "$task"
+
+echo "ID: $id"
+echo "Title: $title"
+echo "Description: $description"
+echo "Location: $location"
+echo "Due Date: $due_date"
+echo "Due Time: $due_time"
+echo "Completed: $completed"
